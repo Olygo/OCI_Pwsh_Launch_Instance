@@ -16,6 +16,23 @@ Set-TimeZone -Id "Romance Standard Time"
 # Set your language preferences
 Set-WinUserLanguageList -LanguageList fr-FR -Force
 Set-Culture fr-FR
+
+# install Windows Update Modules 
+Get-PSRepository
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module -Name PSWindowsUpdate -Force -AllowClobber
+Import-Module PSWindowsUpdate
+Get-WindowsUpdate -MicrosoftUpdate -Verbose
+Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot -Verbose
+# Show hidden files and folders
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Hidden -Value 1
+# Show file extensions
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideFileExt -Value 0
+# Show empty drives
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowDrivesWithNoVolumeLabel -Value 1
+# Show protected operating system files
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSuperHidden -Value 1
+
 "@
 
 ## Base64 encode Cloud-Init script
