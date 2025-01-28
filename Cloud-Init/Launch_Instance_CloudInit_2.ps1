@@ -26,11 +26,15 @@ Add-LocalGroupMember -Group "Remote Desktop Users" -Member "opc"
 # Disable "Require computers to use Network Level Authentication to connect"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 0
 
-# Disable IE Protection mode for Administators
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Active Setup\Installed Components\{1E1FBAAA-5A2F-4885-9EDF-24A653D23154}" -Name "IsInstalled" -Value 0
-# Disable IE Protection mode for Users
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Active Setup\Installed Components\{A3DD5F92-658A-410F-84FD-6FBB0B7B0262}" -Name "IsInstalled" -Value 0
-
+# Disable IE Protection mode
+function Disable-InternetExplorerESC {
+    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
+    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
+    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 0
+    Stop-Process -Name Explorer
+    Write-Host "IE Enhanced Security Configuration (ESC) has been disabled." -ForegroundColor Green
+}
 
 # Show hidden files and folders
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Hidden -Value 1
