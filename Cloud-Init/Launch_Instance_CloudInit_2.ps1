@@ -23,6 +23,9 @@ Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 Add-LocalGroupMember -Group "Remote Desktop Users" -Member "Administrator"
 Add-LocalGroupMember -Group "Remote Desktop Users" -Member "opc"
 
+# Disable "Require computers to use Network Level Authentication to connect"
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 0
+
 # Disable IE Protection mode for Administators
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{3AF3F5DC-50F4-4F8C-848E-F4E3A7A91DB6}" -Name "IsInstalled" -Value 0
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A3DD5F92-658A-410F-84FD-6FBB0B7B0262}" -Name "IsInstalled" -Value 0
